@@ -3,16 +3,21 @@ import type {
   AddLicenseInput,
   AdminStats,
   AuthSession,
+  BlogPost,
   Course,
   CreateDiscountInput,
   CreateOrderInput,
   DiscountCode,
   DiscountValidation,
   EmailMessage,
+  HomeFaq,
+  LeadInput,
+  LeadReceipt,
   LoginInput,
   Order,
   RegisterInput,
   SiteContent,
+  Teacher,
   ValidateDiscountInput,
 } from "./types";
 
@@ -102,6 +107,51 @@ export const adminApi: AdminApi = {
 export const contentApi: ContentApi = {
   getSiteContent: () => mockAdapter.getSiteContent(),
 };
+
+export interface LeadsApi {
+  submitLead(input: LeadInput): Promise<LeadReceipt>;
+}
+
+export interface HomeContentApi {
+  listPosts(): Promise<BlogPost[]>;
+  listTeachers(): Promise<Teacher[]>;
+  listFaqs(): Promise<HomeFaq[]>;
+  listCourses(): Promise<Course[]>;
+}
+
+export const leadsApi: LeadsApi = {
+  submitLead: (input) => mockAdapter.submitLead(input),
+};
+
+export const homeContentApi: HomeContentApi = {
+  listPosts: () => mockAdapter.listPosts(),
+  listTeachers: () => mockAdapter.listTeachers(),
+  listFaqs: () => mockAdapter.listFaqs(),
+  listCourses: () => mockAdapter.listCourses(),
+};
+
+/**
+ * سطح ساده‌ی API مطابق قرارداد صفحه‌ی اصلی.
+ * کامپوننت‌ها فقط با این توابع کار می‌کنند و بعداً adapter واقعی جایگزین می‌شود.
+ */
+export const submitLead = (input: LeadInput): Promise<LeadReceipt> =>
+  mockAdapter.submitLead(input);
+
+export const listCourses = (): Promise<Course[]> => mockAdapter.listCourses();
+
+export const listPosts = (): Promise<BlogPost[]> => mockAdapter.listPosts();
+
+export const listFaqs = (): Promise<HomeFaq[]> => mockAdapter.listFaqs();
+
+export const listTeachers = (): Promise<Teacher[]> => mockAdapter.listTeachers();
+
+export const api = {
+  submitLead,
+  listCourses,
+  listPosts,
+  listFaqs,
+  listTeachers,
+} as const;
 
 export function getErrorMessage(error: unknown): string {
   if (error instanceof Error && error.message) {

@@ -20,7 +20,7 @@ export function Emphasis({
         tone === "primary"
           ? "text-primary"
           : tone === "accent"
-            ? "text-[#8A5A00]"
+            ? "text-[#B07F00]"
             : "text-accent",
         className,
       )}

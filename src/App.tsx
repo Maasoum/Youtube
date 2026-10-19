@@ -8,6 +8,7 @@ import { CourseDetailPage } from "@/pages/CourseDetailPage";
 import { HowItWorksPage } from "@/pages/HowItWorksPage";
 import { AboutPage } from "@/pages/AboutPage";
 import { FaqPage } from "@/pages/FaqPage";
+import { ComingSoonPage } from "@/pages/ComingSoonPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { CheckoutPage } from "@/pages/CheckoutPage";
@@ -28,6 +29,8 @@ export default function App() {
           <Route path="how-it-works" element={<HowItWorksPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="faq" element={<FaqPage />} />
+          <Route path="blog" element={<ComingSoonPage section="وبلاگ" />} />
+          <Route path="blog/:slug" element={<ComingSoonPage section="مقاله" />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
 

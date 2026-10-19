@@ -221,3 +221,49 @@ export interface SiteContent {
   faqs: SiteFaq[];
   testimonials: Testimonial[];
 }
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  readMinutes: number;
+  publishedAt: string;
+  art: ImageKey;
+}
+
+export interface Teacher {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  initials: string;
+  accent: "lavender" | "yellow" | "sky" | "coral";
+}
+
+export interface HomeFaq {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export interface LeadInput {
+  fullName: string;
+  contact: string;
+  consent: boolean;
+  /** فیلد تله‌ی ربات؛ کاربر واقعی آن را پر نمی‌کند. */
+  website?: string;
+}
+
+export interface LeadReceipt {
+  id: string;
+  message: string;
+}
+
+export interface LeadRecord {
+  id: string;
+  fullName: string;
+  contact: string;
+  createdAt: string;
+}

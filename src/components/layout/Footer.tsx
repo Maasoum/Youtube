@@ -7,7 +7,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { brand } from "@/config/brand";
-import { getCurrentPersianYear } from "@/lib/format";
 import { Logo } from "@/components/brand/Logo";
 import { StarBurst } from "@/components/ui/Decorations";
 
@@ -16,6 +15,7 @@ const quickLinks = [
   { label: "همه‌ی دوره‌ها", to: "/courses" },
   { label: "چطور کار می‌کند", to: "/how-it-works" },
   { label: "درباره ما", to: "/about" },
+  { label: "وبلاگ", to: "/blog" },
   { label: "پرسش‌های پرتکرار", to: "/faq" },
 ];
 
@@ -109,13 +109,29 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-white/40">
-            © {getCurrentPersianYear()} {brand.nameFa} — همه‌ی حقوق محفوظ است.
-          </p>
-          <p className="text-xs text-white/40">
-            ساخته‌شده با دقت برای کودکان کنجکاو و والدین آگاه.
-          </p>
+        <div className="mt-12 flex flex-col gap-6 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <p className="text-xs text-white/40">
+              © ۱۴۰۵ {brand.nameFa}. تمامی حقوق محفوظ است.
+            </p>
+            <p className="text-xs text-white/40">
+              ساخته‌شده با دقت برای کودکان کنجکاو و والدین آگاه.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 rounded-2xl border border-dashed border-white/20 bg-white/5 px-4 py-3">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-accent">
+              <ShieldCheck className="size-5" aria-hidden="true" />
+            </span>
+            <div>
+              <p className="text-[11px] font-bold text-white/70">
+                جایگاه نماد اعتماد الکترونیکی
+              </p>
+              <p className="mt-0.5 text-[10px] text-white/35">
+                پس از دریافت، در همین بخش نمایش داده می‌شود.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

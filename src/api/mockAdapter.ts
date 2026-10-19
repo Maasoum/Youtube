@@ -9,20 +9,27 @@ import type {
   AddLicenseInput,
   AdminStats,
   AuthSession,
+  BlogPost,
   Course,
   CreateDiscountInput,
   CreateOrderInput,
   DiscountCode,
   DiscountValidation,
   EmailMessage,
+  HomeFaq,
+  LeadInput,
+  LeadReceipt,
+  LeadRecord,
   LoginInput,
   Order,
   RegisterInput,
   SiteContent,
+  Teacher,
   User,
   ValidateDiscountInput,
 } from "./types";
 import { ApiError } from "./types";
+import { blogPosts, homeFaqs, teachers } from "@/data/mock";
 import {
   seedCourses,
   seedDiscounts,
@@ -62,6 +69,7 @@ interface StoredSession {
 
 const DB_KEY = "brightpaths.mockdb.v1";
 const SESSION_KEY = "brightpaths.session.v1";
+const LEADS_KEY = "brightpaths.leads.v1";
 
 function readStorage(key: string): string | null {
   try {
@@ -689,5 +697,67 @@ export const mockAdapter = {
           new Date(second.sentAt).getTime() - new Date(first.sentAt).getTime(),
       ),
     );
+  },
+
+  async submitLead(input: LeadInput): Promise<LeadReceipt> {
+    await delay(520);
+
+    // تله‌ی ربات: پاسخ موفق بی‌صدا برمی‌گردد اما اطلاعاتی ذخیره نمی‌شود.
+    if (input.website && input.website.trim().length > 0) {
+      return { id: "lead-ignored", message: "عضویت شما ثبت شد." };
+    }
+
+    if (!input.consent) {
+      throw new ApiError(
+        "برای عضویت باید تأیید کنید که والد یا سرپرست قانونی هستید.",
+        "general",
+      );
+    }
+
+    const fullName = input.fullName.trim();
+    const contact = input.contact.trim();
+    if (fullName.length < 2) {
+      throw new ApiError("نام را کامل وارد کنید.", "fullName");
+    }
+    if (contact.length < 5) {
+      throw new ApiError("ایمیل یا شماره موبایل را درست وارد کنید.", "email");
+    }
+
+    const record: LeadRecord = {
+      id: `lead-${Date.now().toString(36)}`,
+      fullName,
+      contact,
+      createdAt: new Date().toISOString(),
+    };
+
+    let leads: LeadRecord[] = [];
+    try {
+      const raw = readStorage(LEADS_KEY);
+      leads = raw ? (JSON.parse(raw) as LeadRecord[]) : [];
+    } catch {
+      leads = [];
+    }
+    leads.push(record);
+    writeStorage(LEADS_KEY, JSON.stringify(leads));
+
+    return {
+      id: record.id,
+      message: `عضویت شما ثبت شد؛ خوشحالیم که همراه ${brand.nameFa} هستید.`,
+    };
+  },
+
+  async listPosts(): Promise<BlogPost[]> {
+    await delay(180);
+    return clone(blogPosts);
+  },
+
+  async listTeachers(): Promise<Teacher[]> {
+    await delay(180);
+    return clone(teachers);
+  },
+
+  async listFaqs(): Promise<HomeFaq[]> {
+    await delay(160);
+    return clone(homeFaqs);
   },
 };

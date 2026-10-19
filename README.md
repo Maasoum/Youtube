@@ -32,8 +32,10 @@ npm run preview     # پیش‌نمایش build
 
 ## ساختار
 
-- `src/api/` — لایه‌ی داده‌ی تایپ‌شده (`authApi`, `coursesApi`, `ordersApi`,
-  `discountsApi`, `adminApi`, `contentApi`) و mock adapter
+- `src/api/` — لایه‌ی داده‌ی تایپ‌شده (`api.submitLead`, `api.listCourses`,
+  `api.listPosts`, `api.listFaqs`, `api.listTeachers` و APIهای حساب/سفارش) و
+  mock adapter
+- `src/data/mock.ts` — داده‌ی نمونه‌ی مقاله‌ها، مربیان و پرسش‌های صفحه‌ی اصلی
 - `src/config/brand.ts` — تنها منبع نام برند
 - `src/config/images.ts` — متن جایگزین مرکزی تصویرسازی‌ها
 - `src/components/` — کامپوننت‌های مشترک، لایه‌ی سایت، دوره، داشبورد و ادمین
@@ -50,5 +52,7 @@ npm run preview     # پیش‌نمایش build
   ایمیل واقعی ارسال نمی‌شود.
 - برای فعال‌کردن فونت Peyda، دو فایل woff2 را طبق
   `public/fonts/README.md` اضافه کنید؛ تا آن زمان فالبک Tahoma استفاده می‌شود.
-- برای بازنشانی داده‌ی نمونه، کلیدهای `brightpaths.mockdb.v1` و
-  `brightpaths.session.v1` را از localStorage حذف کنید.
+- صفحه‌ی اصلی شامل هیرو، ویژگی‌های تعاملی، دوره‌های محبوب، مواد آموزشی،
+  کاروسل مربیان، وبلاگ، پرسش‌های متداول و فرم عضویت در خبرنامه است.
+- برای بازنشانی داده‌ی نمونه، کلیدهای `brightpaths.mockdb.v1`،
+  `brightpaths.session.v1` و `brightpaths.leads.v1` را از localStorage حذف کنید.

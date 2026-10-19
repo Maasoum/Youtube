@@ -1,37 +1,29 @@
 import { useEffect } from "react";
 import { brand } from "@/config/brand";
-import { useCourses } from "@/hooks/useCourses";
-import { useSiteContent } from "@/hooks/useSiteContent";
 import { Hero } from "@/components/home/Hero";
-import { FeaturedCourses } from "@/components/home/FeaturedCourses";
-import { HowItWorksSection } from "@/components/home/HowItWorksSection";
-import { WhyUs } from "@/components/home/WhyUs";
-import { Testimonials } from "@/components/home/Testimonials";
-import { FaqPreview } from "@/components/home/FaqPreview";
-import { FinalCta } from "@/components/home/FinalCta";
+import { FeaturesSection } from "@/components/home/FeaturesSection";
+import { PopularCourses } from "@/components/home/PopularCourses";
+import { MaterialsSection } from "@/components/home/MaterialsSection";
+import { TeachersSection } from "@/components/home/TeachersSection";
+import { BlogSection } from "@/components/home/BlogSection";
+import { HomeFaq } from "@/components/home/HomeFaq";
+import { MembershipSection } from "@/components/home/MembershipSection";
 
 export function HomePage() {
-  const { courses, loading, error, reload } = useCourses();
-  const { faqs, testimonials, loading: contentLoading } = useSiteContent();
-
   useEffect(() => {
-    document.title = `${brand.nameFa} | دوره‌های هوش مصنوعی برای کودکان`;
+    document.title = `${brand.nameFa} | بهترین جا برای یادگیری هوش مصنوعی و بازی کودکان`;
   }, []);
 
   return (
     <>
       <Hero />
-      <FeaturedCourses
-        courses={courses}
-        loading={loading}
-        error={error}
-        onRetry={reload}
-      />
-      <HowItWorksSection />
-      <WhyUs />
-      <Testimonials testimonials={testimonials} loading={contentLoading} />
-      <FaqPreview faqs={faqs} loading={contentLoading} />
-      <FinalCta />
+      <FeaturesSection />
+      <PopularCourses />
+      <MaterialsSection />
+      <TeachersSection />
+      <BlogSection />
+      <HomeFaq />
+      <MembershipSection />
     </>
   );
 }

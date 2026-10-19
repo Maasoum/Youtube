@@ -116,6 +116,38 @@ export const contactMessageSchema = z.object({
     .max(800, "پیام شما نمی‌تواند بیشتر از ۸۰۰ کاراکتر باشد."),
 });
 
+const leadContactSchema = z
+  .string()
+  .trim()
+  .min(1, "ایمیل یا شماره موبایل را وارد کنید.")
+  .refine(
+    (value) => {
+      const normalized = toEnglishDigits(value).trim();
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalized);
+      const isPhone = /^09\d{9}$/.test(normalized.replace(/[\s-]/g, ""));
+      return isEmail || isPhone;
+    },
+    { message: "ایمیل یا شماره موبایل را درست وارد کنید." },
+  );
+
+export const membershipSchema = z
+  .object({
+    fullName: z
+      .string()
+      .trim()
+      .min(2, "نام را وارد کنید.")
+      .max(60, "نام نمی‌تواند بیشتر از ۶۰ کاراکتر باشد."),
+    contact: leadContactSchema,
+    consent: z.boolean().refine((value) => value === true, {
+      message:
+        "برای عضویت باید تأیید کنید که والد یا سرپرست قانونی هستید.",
+    }),
+    website: z.string().max(200).optional().or(z.literal("")),
+  })
+  .strict();
+
+export type MembershipFormValues = z.infer<typeof membershipSchema>;
+
 export type LoginFormValues = z.infer<typeof loginSchema>;
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
