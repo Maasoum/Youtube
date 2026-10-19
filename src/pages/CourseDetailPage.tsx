@@ -11,6 +11,7 @@ import {
   RotateCcw,
   ShieldCheck,
   Sparkles,
+  Star,
   Users,
 } from "lucide-react";
 import {
@@ -161,7 +162,7 @@ export function CourseDetailPage() {
                 <LevelBadge level={course.level} />
                 {course.badge ? (
                   <span className="chip bg-white text-ink shadow-sm">
-                    <StarBurst className="size-3 text-accent" />
+                    <Star className="size-3 fill-accent text-accent" aria-hidden="true" />
                     {course.badge}
                   </span>
                 ) : null}
