@@ -1,0 +1,156 @@
+@font-face {
+  font-family: "Peyda";
+  src: url("/fonts/PeydaWeb-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Peyda";
+  src: url("/fonts/PeydaWeb-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #6446e0;
+    --color-primary-soft: #cfc5f8;
+    --color-accent: #f7c948;
+    --color-ink: #111111;
+    --color-muted: #6b6b7b;
+    --color-surface-soft: #f4f3f9;
+    --shadow-focus: 0 0 0 4px rgba(100, 70, 224, 0.22);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-primary-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    line-height: 1.9;
+  }
+
+  strong,
+  b {
+    font-weight: 700;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card-surface {
+    @apply rounded-3xl border border-black/5 bg-white shadow-soft;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold;
+  }
+
+  .input-base {
+    @apply w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-ink transition placeholder:text-muted/60 hover:border-black/20 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 disabled:cursor-not-allowed disabled:bg-surface-soft;
+  }
+
+  .input-error {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-100;
+  }
+
+  .label-base {
+    @apply mb-2 block text-sm font-bold text-ink;
+  }
+
+  .ltr-inline {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(
+      rgba(100, 70, 224, 0.22) 1.4px,
+      transparent 1.4px
+    );
+    background-size: 18px 18px;
+  }
+
+  .dot-grid-accent {
+    background-image: radial-gradient(
+      rgba(17, 17, 17, 0.16) 1.4px,
+      transparent 1.4px
+    );
+    background-size: 16px 16px;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
