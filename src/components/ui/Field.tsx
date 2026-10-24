@@ -10,6 +10,8 @@ import { cn } from "@/lib/cn";
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  /** برچسب برای صفحه‌خوان خوانده می‌شود ولی دیده نمی‌شود (فرم‌های فشرده). */
+  hideLabel?: boolean;
   error?: string;
   hint?: string;
   icon?: LucideIcon;
@@ -22,6 +24,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   function InputField(
     {
       label,
+      hideLabel = false,
       error,
       hint,
       icon: Icon,
@@ -41,7 +44,10 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
 
     return (
       <div>
-        <label htmlFor={inputId} className="label-base">
+        <label
+          htmlFor={inputId}
+          className={hideLabel ? "sr-only" : "label-base"}
+        >
           {label}
           {required ? (
             <span className="ms-1 text-red-500" aria-hidden="true">
@@ -67,7 +73,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
               "input-base",
               Icon && "ps-12",
               endAdornment ? "pe-12" : false,
-              dirLtr && "ltr-inline text-start",
+              dirLtr && "text-start",
               mono && "font-mono tracking-wide",
               error && "input-error",
               className,

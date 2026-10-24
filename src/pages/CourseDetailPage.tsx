@@ -20,6 +20,7 @@ import {
   type Course,
 } from "@/api";
 import { brand } from "@/config/brand";
+import { purchaseConfig } from "@/config/purchase";
 import { useCourses } from "@/hooks/useCourses";
 import {
   formatNumber,
@@ -49,10 +50,18 @@ import {
 
 const purchaseBenefits = [
   { icon: BadgeCheck, text: "لایسنس دائمی و تک‌کاربره برای یک کودک" },
-  { icon: Clock3, text: "تحویل کد لایسنس تا یک روز کاری" },
+  {
+    icon: Clock3,
+    text: `تحویل کد لایسنس حداکثر ${toPersianDigits(
+      purchaseConfig.licenseDeliveryHours,
+    )} ساعت کاری`,
+  },
   { icon: Mail, text: "ارسال کد به ایمیل و قرارگرفتن در داشبورد" },
   { icon: Users, text: "راهنمای همراهی والدین در طول مسیر" },
-  { icon: RotateCcw, text: "ضمانت بازگشت وجه تا ۷ روز" },
+  {
+    icon: RotateCcw,
+    text: `ضمانت بازگشت وجه تا ${toPersianDigits(purchaseConfig.refundDays)} روز`,
+  },
 ];
 
 export function CourseDetailPage() {
@@ -302,23 +311,15 @@ export function CourseDetailPage() {
                   {formatWeeks(course.durationWeeks)} — {formatSessions(course.sessions)}
                 </span>
               </div>
-              <ol className="mt-6 space-y-4">
-                {course.syllabus.map((chapter, index) => (
-                  <li key={chapter.title} className="flex gap-4">
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-soft/35 text-xs font-bold text-primary">
-                      {toPersianDigits(index + 1)}
-                    </span>
-                    <div className="flex-1 rounded-2xl border border-black/5 bg-white p-4 sm:p-5">
-                      <h3 className="text-sm font-bold text-ink sm:text-base">
-                        {chapter.title}
-                      </h3>
-                      <p className="mt-1.5 text-xs leading-7 text-muted">
-                        {chapter.summary}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+              <div className="mt-6 rounded-3xl border border-black/5 bg-white px-5 shadow-sm sm:px-6">
+                <Accordion
+                  items={course.syllabus.map((chapter, index) => ({
+                    question: `جلسه ${toPersianDigits(index + 1)} — ${chapter.title}`,
+                    answer: chapter.summary,
+                  }))}
+                  defaultOpen={0}
+                />
+              </div>
             </div>
 
             <div>

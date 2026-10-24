@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Emphasis } from "./Emphasis";
 
@@ -8,7 +7,7 @@ type EmphasisTone = "primary" | "accent" | "onDark";
 
 interface SectionTitleProps {
   title: string;
-  /** کلمه‌ای از عنوان که با رنگ، وزن و خط موج‌دار برجسته می‌شود. */
+  /** کلمه‌ای از عنوان که با رنگ و خط موج‌دار برجسته می‌شود. */
   highlight?: string;
   eyebrow?: string;
   description?: ReactNode;
@@ -49,31 +48,35 @@ export function SectionTitle({
   return (
     <div
       className={cn(
-        "flex flex-col gap-5",
+        "flex flex-col gap-6",
         align === "center"
           ? "items-center text-center"
           : "items-start text-start sm:flex-row sm:items-end sm:justify-between",
         className,
       )}
     >
-      <div className={cn("max-w-3xl", align === "center" && "mx-auto")}>
+      <div className={cn("max-w-2xl", align === "center" && "mx-auto")}>
         {eyebrow ? (
           <span
             className={cn(
-              "mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-bold",
-              tone === "dark"
-                ? "bg-white/10 text-accent"
-                : "bg-primary-soft/35 text-primary",
+              "mb-3 inline-flex items-center gap-2 text-xs font-bold",
+              tone === "dark" ? "text-accent" : "text-primary/75",
             )}
           >
-            <Sparkles className="size-3.5" aria-hidden="true" />
+            <span
+              aria-hidden="true"
+              className={cn(
+                "inline-block size-1.5 rounded-full",
+                tone === "dark" ? "bg-accent" : "bg-primary",
+              )}
+            />
             {eyebrow}
           </span>
         ) : null}
         <h2
           id={id}
           className={cn(
-            "text-balance text-3xl font-bold leading-[1.5] sm:text-4xl lg:text-[2.7rem]",
+            "text-balance text-[1.9rem] font-bold leading-[1.55] sm:text-[2.35rem] lg:text-[2.7rem]",
             tone === "dark" ? "text-white" : "text-ink",
           )}
         >
@@ -90,9 +93,9 @@ export function SectionTitle({
         {description ? (
           <p
             className={cn(
-              "mt-4 text-sm leading-8 sm:text-base",
-              tone === "dark" ? "text-white/70" : "text-muted",
-              align === "center" && "mx-auto max-w-xl",
+              "mt-4 max-w-xl text-sm leading-8 sm:text-[15px]",
+              tone === "dark" ? "text-white/65" : "text-muted",
+              align === "center" && "mx-auto",
             )}
           >
             {description}

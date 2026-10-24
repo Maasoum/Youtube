@@ -4,7 +4,6 @@ import {
   GraduationCap,
   KeyRound,
   LifeBuoy,
-  Mail,
   Sparkles,
 } from "lucide-react";
 import type { FaqCategory, SiteFaq } from "@/api";
@@ -173,14 +172,9 @@ export function FaqPage() {
                     بررسی کنیم.
                   </p>
                 </div>
-                <div className="flex shrink-0 flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <div className="flex items-center gap-2.5">
-                    <Mail className="size-4 text-accent" aria-hidden="true" />
-                    <span dir="ltr" className="ltr-inline font-mono text-xs text-white/80">
-                      {brand.supportEmail}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-white/45">{brand.supportHours}</p>
+                <div className="flex shrink-0 flex-col gap-1 rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-[11px] text-white/45">ساعات پاسخ‌گویی</p>
+                  <p className="text-xs text-white/80">{brand.supportHours}</p>
                 </div>
               </div>
             </div>

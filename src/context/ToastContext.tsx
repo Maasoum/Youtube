@@ -81,7 +81,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      {createPortal(
+      {typeof document !== "undefined" ? createPortal(
         <div
           aria-live="polite"
           aria-atomic="false"
@@ -121,7 +121,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           </AnimatePresence>
         </div>,
         document.body,
-      )}
+      ) : null}
     </ToastContext.Provider>
   );
 }

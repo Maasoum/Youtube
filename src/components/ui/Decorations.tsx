@@ -11,20 +11,26 @@ const starPoints = Array.from({ length: 24 }, (_, index) => {
   ).toFixed(2)}`;
 }).join(" ");
 
-export function Squiggle({ className }: { className?: string }) {
+interface SquiggleProps {
+  className?: string;
+  /** ضخامت خط در مختصات viewBox (پیش‌فرض ۴)؛ برای خط‌های بولدتر بالا می‌رود. */
+  strokeWidth?: number;
+}
+
+export function Squiggle({ className, strokeWidth = 4 }: SquiggleProps) {
   return (
     <svg
-      viewBox="0 0 120 12"
+      viewBox="0 0 120 14"
       preserveAspectRatio="none"
       aria-hidden="true"
       focusable="false"
-      className={cn("pointer-events-none h-2.5 w-full", className)}
+      className={cn("pointer-events-none w-full", className)}
     >
       <path
         d="M2 8.2C13.5 2.8 22 10.3 33.5 6.2 45 2.1 53.5 10.2 65 6.2 76.5 2.2 85 10.3 96.5 6.2c6-2.1 12.7-1.2 21.5 1.5"
         fill="none"
         stroke="currentColor"
-        strokeWidth="4"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
       />
     </svg>
@@ -138,6 +144,40 @@ export function HandArrow({ className }: { className?: string }) {
         strokeWidth="3.5"
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** حلقه‌ی دست‌نویس دور تصویر؛ حس تصویرسازی و دفترچه‌ی طراحی می‌دهد. */
+export function SketchRing({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 220 210"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+      className={cn("pointer-events-none", className)}
+    >
+      <path
+        d="M118 13C163 7 201 30 207 62c7 35-22 68-62 80-37 11-79 6-105-15C15 108 8 78 25 54 43 28 78 15 118 13Z"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M34 168c-7 8-11 17-12 27 9-6 17-14 23-23"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M58 190c9-5 17-4 24 2"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
       />
     </svg>
   );

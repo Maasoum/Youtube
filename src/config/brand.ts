@@ -4,9 +4,9 @@ export const brand = {
   tagline: "هوش مصنوعی، مسیر روشن کودکی",
   description:
     "دوره‌های آنلاین هوش مصنوعی برای کودکان ۸ تا ۱۴ سال؛ با لایسنس دائمی، مسیر گام‌به‌گام و همراهی والدین.",
-  supportEmail: "hello@brightpaths.example",
+  supportEmail: "",
   supportHours: "شنبه تا پنجشنبه، ۹ تا ۱۸",
-  instagramHandle: "brightpaths.example",
+  instagramHandle: "brightpaths",
 } as const;
 
 export const brandColors = {

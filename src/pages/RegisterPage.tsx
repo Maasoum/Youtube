@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff, Sparkles, UserPlus } from "lucide-react";
+import { Eye, EyeOff, MailCheck, Sparkles, UserPlus } from "lucide-react";
 import { ApiError } from "@/api";
 import { brand } from "@/config/brand";
 import { useAuth } from "@/context/AuthContext";
@@ -11,6 +11,7 @@ import { registerSchema, type RegisterFormValues } from "@/lib/validation";
 import { AuthAside } from "@/components/auth/AuthAside";
 import { FormAlert } from "@/components/auth/FormAlert";
 import { CheckboxField, InputField } from "@/components/ui/Field";
+import { PasswordStrength } from "@/components/auth/PasswordStrength";
 import { Button } from "@/components/ui/Button";
 import { PageLoader } from "@/components/ui/Loading";
 import { DotGrid } from "@/components/ui/Decorations";
@@ -33,11 +34,13 @@ export function RegisterPage() {
   const state = location.state as LocationState | null;
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -50,6 +53,8 @@ export function RegisterPage() {
       acceptTerms: false,
     },
   });
+
+  const passwordValue = watch("password") ?? "";
 
   useEffect(() => {
     document.title = `ساخت حساب | ${brand.nameFa}`;
@@ -66,12 +71,19 @@ export function RegisterPage() {
   const onSubmit = handleSubmit(async (values) => {
     setFormError(null);
     try {
-      await registerAccount({
+      const outcome = await registerAccount({
         fullName: values.fullName,
         email: values.email,
         phone: values.phone,
         password: values.password,
       });
+
+      if (outcome.pendingVerification) {
+        setPendingEmail(values.email);
+        notify("حساب ساخته شد؛ برای فعال‌سازی ایمیل خود را تأیید کنید.", "success");
+        return;
+      }
+
       notify("حساب شما ساخته شد. خوش آمدید!", "success");
     } catch (error) {
       if (error instanceof ApiError && error.field === "email") {
@@ -104,6 +116,38 @@ export function RegisterPage() {
               اطلاعات کودک را نگه نمی‌داریم؛ فقط همین چند فیلد لازم است.
             </p>
 
+            {pendingEmail ? (
+              <div
+                role="status"
+                className="mt-7 rounded-3xl border border-emerald-200 bg-emerald-50/70 p-5"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-700">
+                    <MailCheck className="size-5" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-ink">
+                      حساب ساخته شد؛ یک قدم مانده
+                    </p>
+                    <p className="mt-2 text-xs leading-6 text-muted">
+                      پیوند تأیید به{" "}
+                      <span dir="ltr" className="font-mono text-ink">
+                        {pendingEmail}
+                      </span>{" "}
+                      ارسال شد. برای ورود، ابتدا روی همان پیوند بزنید. اگر
+                      ایمیل را نمی‌بینید، پوشه‌ی هرزنامه را هم بررسی کنید.
+                    </p>
+                    <Link
+                      to="/login"
+                      state={state}
+                      className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-white transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+                    >
+                      رفتن به صفحه‌ی ورود
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ) : (
             <form onSubmit={onSubmit} noValidate className="mt-7 space-y-5">
               {formError ? <FormAlert message={formError} /> : null}
 
@@ -175,12 +219,25 @@ export function RegisterPage() {
                 />
               </div>
 
+              <PasswordStrength value={passwordValue} />
+
               <CheckboxField
                 label={
                   <>
                     با{" "}
-                    <span className="font-bold text-ink">شرایط استفاده</span> و{" "}
-                    <span className="font-bold text-ink">حریم خصوصی</span>{" "}
+                    <Link
+                      to="/terms"
+                      className="font-bold text-primary underline-offset-4 hover:underline"
+                    >
+                      شرایط استفاده
+                    </Link>{" "}
+                    و{" "}
+                    <Link
+                      to="/privacy"
+                      className="font-bold text-primary underline-offset-4 hover:underline"
+                    >
+                      حریم خصوصی
+                    </Link>{" "}
                     موافقم و می‌دانم هر لایسنس مخصوص یک کاربر است.
                   </>
                 }
@@ -210,6 +267,7 @@ export function RegisterPage() {
                 </Link>
               </p>
             </form>
+            )}
           </div>
 
           <AuthAside />

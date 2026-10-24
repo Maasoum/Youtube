@@ -6,7 +6,6 @@ import { CourseCard } from "@/components/course/CourseCard";
 import { CourseCardSkeleton } from "@/components/ui/Loading";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
-import { DotGrid, ScallopStar } from "@/components/ui/Decorations";
 
 export function PopularCourses() {
   const { courses, loading, error, reload } = useCourses();
@@ -14,20 +13,29 @@ export function PopularCourses() {
 
   return (
     <section
-      className="relative overflow-hidden bg-surface-soft/60 py-16 sm:py-24"
+      className="bg-[#FAF8FF] py-16 sm:py-24"
       aria-labelledby="popular-courses-title"
     >
-      <DotGrid className="absolute start-4 top-16 h-24 w-36 opacity-40" />
-      <ScallopStar className="absolute -end-10 bottom-24 hidden size-36 rotate-12 text-primary-soft/60 md:block" />
-
-      <Container className="relative">
+      <Container>
         <Reveal>
           <SectionTitle
             id="popular-courses-title"
+            align="start"
             eyebrow="محبوب در میان خانواده‌ها"
             title="دوره‌های محبوب"
             highlight="محبوب"
-            description="هر دوره یک مسیر مستقل با لایسنس دائمی و تک‌کاربره است. یک نگاه به سطح و بازه‌ی سنی بیندازید و مسیر مناسب کودک‌تان را انتخاب کنید."
+            description="هر دوره یک مسیر مستقل با لایسنس دائمی و تک‌کاربره است؛ مسیر مناسب کودک‌تان را انتخاب کنید."
+            action={
+              <ButtonLink
+                to="/courses"
+                variant="secondary"
+                size="sm"
+                arrow
+                className="border-primary/25 text-ink hover:border-primary/45 hover:bg-primary-soft/10"
+              >
+                همه‌ی دوره‌ها
+              </ButtonLink>
+            }
           />
         </Reveal>
 
@@ -39,7 +47,7 @@ export function PopularCourses() {
               ))}
             </div>
           ) : error ? (
-            <div className="mx-auto flex max-w-lg flex-col items-center gap-4 rounded-3xl border border-red-100 bg-white p-8 text-center">
+            <div className="mx-auto flex max-w-lg flex-col items-center gap-4 rounded-[2rem] bg-white p-8 text-center">
               <span className="flex size-12 items-center justify-center rounded-full bg-red-50 text-red-600">
                 <AlertCircle className="size-6" aria-hidden="true" />
               </span>
@@ -49,8 +57,8 @@ export function PopularCourses() {
               </Button>
             </div>
           ) : shown.length === 0 ? (
-            <p className="rounded-3xl bg-white p-8 text-center text-sm text-muted">
-              هنوز دوره‌ای برای نمایش آماده نیست.
+            <p className="rounded-[2rem] bg-white p-8 text-center text-sm text-muted">
+              هنوز دوره‌ای برای نمایش آماده نیست؛
             </p>
           ) : (
             <div className="grid gap-5 md:grid-cols-3">
@@ -62,18 +70,6 @@ export function PopularCourses() {
             </div>
           )}
         </div>
-
-        <Reveal delay={0.12}>
-          <div className="mt-9 flex justify-center">
-            <ButtonLink to="/courses" variant="secondary" arrow>
-              همه‌ی دوره‌ها
-            </ButtonLink>
-          </div>
-          <p className="mt-6 text-center text-xs leading-7 text-muted">
-            قیمت‌ها به تومان و برای یک لایسنس دائمی و تک‌کاربره است. پس از
-            پرداخت، لایسنس حداکثر تا یک روز کاری در داشبورد قرار می‌گیرد.
-          </p>
-        </Reveal>
       </Container>
     </section>
   );

@@ -2,38 +2,72 @@ import { useEffect, useMemo, useState } from "react";
 import { AlertCircle, BookOpen, CheckCircle2, SlidersHorizontal } from "lucide-react";
 import type { CourseLevel } from "@/api";
 import { brand } from "@/config/brand";
+import { purchaseConfig } from "@/config/purchase";
 import { useCourses } from "@/hooks/useCourses";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { Emphasis } from "@/components/ui/Emphasis";
 import { CourseCard } from "@/components/course/CourseCard";
 import { CourseCardSkeleton } from "@/components/ui/Loading";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { courseLevelLabels } from "@/lib/labels";
 import { toPersianDigits } from "@/lib/format";
 import { cn } from "@/lib/cn";
 
 type LevelFilter = CourseLevel | "all";
+type AgeFilter = "all" | "8-10" | "10-12" | "12-14";
 
-const filters: Array<{ value: LevelFilter; label: string }> = [
-  { value: "all", label: "همه‌ی دوره‌ها" },
+const levelFilters: Array<{ value: LevelFilter; label: string }> = [
+  { value: "all", label: "همه‌ی سطح‌ها" },
   { value: "beginner", label: courseLevelLabels.beginner },
   { value: "intermediate", label: courseLevelLabels.intermediate },
   { value: "advanced", label: courseLevelLabels.advanced },
 ];
 
+const ageFilters: Array<{
+  value: AgeFilter;
+  label: string;
+  min?: number;
+  max?: number;
+}> = [
+  { value: "all", label: "همه‌ی سن‌ها" },
+  { value: "8-10", label: "۸ تا ۱۰ سال", min: 8, max: 10 },
+  { value: "10-12", label: "۱۰ تا ۱۲ سال", min: 10, max: 12 },
+  { value: "12-14", label: "۱۲ تا ۱۴ سال", min: 12, max: 14 },
+];
+
 export function CoursesPage() {
   const { courses, loading, error, reload } = useCourses();
   const [level, setLevel] = useState<LevelFilter>("all");
+  const [age, setAge] = useState<AgeFilter>("all");
 
   useEffect(() => {
     document.title = `دوره‌ها | ${brand.nameFa}`;
   }, []);
 
-  const visibleCourses = useMemo(
-    () => (level === "all" ? courses : courses.filter((course) => course.level === level)),
-    [courses, level],
-  );
+  const visibleCourses = useMemo(() => {
+    const ageFilter = ageFilters.find((item) => item.value === age);
+
+    return courses.filter((course) => {
+      const matchesLevel = level === "all" || course.level === level;
+      const matchesAge =
+        !ageFilter ||
+        ageFilter.value === "all" ||
+        (typeof ageFilter.min === "number" &&
+          typeof ageFilter.max === "number" &&
+          course.ageRange.min <= ageFilter.max &&
+          course.ageRange.max >= ageFilter.min);
+
+      return matchesLevel && matchesAge;
+    });
+  }, [courses, level, age]);
+
+  const hasActiveFilter = level !== "all" || age !== "all";
+
+  const resetFilters = () => {
+    setLevel("all");
+    setAge("all");
+  };
 
   return (
     <>
@@ -54,50 +88,96 @@ export function CoursesPage() {
           </span>
           <span className="inline-flex items-center gap-1.5">
             <CheckCircle2 className="size-4 text-emerald-600" aria-hidden="true" />
-            تحویل لایسنس تا یک روز کاری
+            تحویل لایسنس حداکثر {toPersianDigits(purchaseConfig.licenseDeliveryHours)} ساعت کاری
           </span>
           <span className="inline-flex items-center gap-1.5">
             <CheckCircle2 className="size-4 text-emerald-600" aria-hidden="true" />
-            ضمانت بازگشت ۷ روزه
+            ضمانت بازگشت {toPersianDigits(purchaseConfig.refundDays)} روزه
           </span>
         </div>
       </PageIntro>
 
       <section className="container-page py-12 sm:py-16" aria-label="فهرست دوره‌ها">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2 text-sm text-muted">
-            <SlidersHorizontal className="size-4" aria-hidden="true" />
-            <span>
-              {loading
-                ? "در حال دریافت دوره‌ها…"
-                : `${toPersianDigits(visibleCourses.length)} دوره`}
-            </span>
+        <div className="mb-8 space-y-5 rounded-3xl border border-black/5 bg-white p-4 shadow-soft sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-sm font-bold text-ink">
+              <SlidersHorizontal className="size-4 text-primary" aria-hidden="true" />
+              <span>فیلتر دوره‌ها</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-muted" aria-live="polite">
+                {loading
+                  ? "در حال دریافت دوره‌ها…"
+                  : `${toPersianDigits(visibleCourses.length)} دوره`}
+              </span>
+              {hasActiveFilter ? (
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="rounded-full border border-black/10 px-3 py-1.5 text-[10px] font-bold text-muted transition hover:border-primary/30 hover:text-primary"
+                >
+                  پاک‌کردن فیلترها
+                </button>
+              ) : null}
+            </div>
           </div>
 
-          <div
-            role="group"
-            aria-label="فیلتر سطح دوره"
-            className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
-          >
-            {filters.map((filter) => {
-              const isActive = level === filter.value;
-              return (
-                <button
-                  key={filter.value}
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setLevel(filter.value)}
-                  className={cn(
-                    "shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition",
-                    isActive
-                      ? "border-primary bg-primary text-white"
-                      : "border-black/10 bg-white text-muted hover:border-primary/30 hover:text-primary",
-                  )}
-                >
-                  {filter.label}
-                </button>
-              );
-            })}
+          <div>
+            <p className="mb-2 text-[11px] font-bold text-muted">بازه‌ی سنی</p>
+            <div
+              role="group"
+              aria-label="فیلتر بازه‌ی سنی"
+              className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
+            >
+              {ageFilters.map((filter) => {
+                const isActive = age === filter.value;
+                return (
+                  <button
+                    key={filter.value}
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setAge(filter.value)}
+                    className={cn(
+                      "shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25",
+                      isActive
+                        ? "border-primary bg-primary text-white"
+                        : "border-black/10 bg-surface-soft/60 text-muted hover:border-primary/30 hover:text-primary",
+                    )}
+                  >
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="border-t border-black/5 pt-4">
+            <p className="mb-2 text-[11px] font-bold text-muted">سطح دوره</p>
+            <div
+              role="group"
+              aria-label="فیلتر سطح دوره"
+              className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
+            >
+              {levelFilters.map((filter) => {
+                const isActive = level === filter.value;
+                return (
+                  <button
+                    key={filter.value}
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setLevel(filter.value)}
+                    className={cn(
+                      "shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25",
+                      isActive
+                        ? "border-primary bg-primary text-white"
+                        : "border-black/10 bg-white text-muted hover:border-primary/30 hover:text-primary",
+                    )}
+                  >
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -119,11 +199,11 @@ export function CoursesPage() {
         ) : visibleCourses.length === 0 ? (
           <EmptyState
             icon={BookOpen}
-            title="در این سطح فعلاً دوره‌ای نداریم"
-            description="به‌زودی دوره‌های تازه اضافه می‌شوند. در این مدت می‌توانید همه‌ی مسیرهای یادگیری را ببینید."
+            title="با این فیلتر دوره‌ای نداریم"
+            description="برای دیدن همه‌ی مسیرها، فیلترها را پاک کنید. دوره‌های تازه هم به‌زودی اضافه می‌شوند."
             action={
-              <Button variant="secondary" size="sm" onClick={() => setLevel("all")}>
-                نمایش همه‌ی دوره‌ها
+              <Button variant="secondary" size="sm" onClick={resetFilters}>
+                پاک‌کردن فیلترها
               </Button>
             }
           />
@@ -145,14 +225,9 @@ export function CoursesPage() {
             </p>
           </div>
           <div className="flex sm:justify-end">
-            <a
-              href={`mailto:${brand.supportEmail}`}
-              className="inline-flex max-w-full items-center gap-2 rounded-full bg-white px-4 py-2.5 text-xs font-bold text-primary shadow-sm transition hover:bg-primary-soft/20"
-            >
-              <span dir="ltr" className="ltr-inline truncate font-mono">
-                {brand.supportEmail}
-              </span>
-            </a>
+            <ButtonLink to="/contact" variant="onDark" size="sm" arrow>
+              تماس با ما
+            </ButtonLink>
           </div>
         </div>
       </section>

@@ -51,6 +51,8 @@ export function Modal({
     };
   }, [open]);
 
+  if (!open) return null;
+
   return createPortal(
     <dialog
       ref={dialogRef}

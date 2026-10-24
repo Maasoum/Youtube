@@ -1,21 +1,38 @@
-import { CheckCircle2, Clock3, CreditCard, XCircle } from "lucide-react";
+import {
+  Ban,
+  CheckCircle2,
+  Clock3,
+  CreditCard,
+  PauseCircle,
+  RotateCcw,
+  TimerOff,
+  XCircle,
+} from "lucide-react";
 import type { CourseLevel, OrderStatus } from "@/api";
 import { courseLevelLabels, orderStatusLabels } from "@/lib/labels";
 import { cn } from "@/lib/cn";
 
 const statusStyles: Record<OrderStatus, string> = {
-  awaiting_payment: "bg-amber-50 text-amber-800",
-  paid: "bg-sky-50 text-sky-800",
-  delivered: "bg-emerald-50 text-emerald-800",
-  canceled: "bg-red-50 text-red-700",
+  pending: "bg-amber-50 text-amber-800",
+  awaiting_license: "bg-sky-50 text-sky-800",
+  fulfilled: "bg-emerald-50 text-emerald-800",
+  on_hold: "bg-orange-50 text-orange-800",
+  failed: "bg-red-50 text-red-700",
+  cancelled: "bg-zinc-100 text-zinc-700",
+  expired: "bg-surface-soft text-muted",
+  refunded: "bg-purple-50 text-purple-700",
 };
 
 const statusIcons = {
-  awaiting_payment: CreditCard,
-  paid: Clock3,
-  delivered: CheckCircle2,
-  canceled: XCircle,
-};
+  pending: CreditCard,
+  awaiting_license: Clock3,
+  fulfilled: CheckCircle2,
+  on_hold: PauseCircle,
+  failed: XCircle,
+  cancelled: Ban,
+  expired: TimerOff,
+  refunded: RotateCcw,
+} as const;
 
 export function OrderStatusBadge({
   status,

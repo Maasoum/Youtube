@@ -34,7 +34,7 @@ export function Price({
         {formatNumber(amount)}
         <span
           className={cn(
-            "ms-1 text-xs font-medium",
+            "ms-1 text-xs",
             tone === "light" ? "text-muted" : "text-white/70",
           )}
         >

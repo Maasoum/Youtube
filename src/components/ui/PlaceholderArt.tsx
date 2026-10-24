@@ -2,6 +2,7 @@ import { useId } from "react";
 import { brandColors } from "@/config/brand";
 import { imageAlts } from "@/config/images";
 import type { ImageKey } from "@/types/image";
+import { assetUrl } from "@/lib/asset";
 import { cn } from "@/lib/cn";
 
 interface PlaceholderArtProps {
@@ -15,7 +16,9 @@ interface Palette {
   glow: string;
 }
 
-const palettes: Record<ImageKey, Palette> = {
+type SvgImageKey = Exclude<ImageKey, "studio">;
+
+const palettes: Record<SvgImageKey, Palette> = {
   hero: { start: "#E9E4FF", end: "#C9BDF7", glow: "#F7C948" },
   foundations: { start: "#F1EDFF", end: "#D9CFF9", glow: "#F7C948" },
   creative: { start: "#FFF0EA", end: "#FFD5CB", glow: "#6446E0" },
@@ -711,7 +714,7 @@ function SceneDashboard() {
   );
 }
 
-const scenes: Record<ImageKey, () => JSX.Element> = {
+const scenes: Record<SvgImageKey, () => JSX.Element> = {
   hero: SceneHero,
   foundations: SceneFoundations,
   creative: SceneCreative,
@@ -726,6 +729,21 @@ const scenes: Record<ImageKey, () => JSX.Element> = {
 
 export function PlaceholderArt({ imageKey, className }: PlaceholderArtProps) {
   const uid = useId().replace(/:/g, "");
+
+  if (imageKey === "studio") {
+    return (
+      <img
+        src={assetUrl("brand/course-studio-little.png")}
+        alt={imageAlts.studio}
+        width={640}
+        height={366}
+        decoding="async"
+        draggable={false}
+        className={cn("block h-full w-full object-cover", className)}
+      />
+    );
+  }
+
   const palette = palettes[imageKey];
   const Scene = scenes[imageKey];
 

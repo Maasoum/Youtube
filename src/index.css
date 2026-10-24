@@ -1,6 +1,11 @@
 @font-face {
   font-family: "Peyda";
-  src: url("/fonts/PeydaWeb-Regular.woff2") format("woff2");
+  src:
+    local("Peyda"),
+    local("PeydaWeb"),
+    local("PeydaWeb-Regular"),
+    url("/fonts/PeydaWeb-Regular.woff2") format("woff2"),
+    url("/fonts/PeydaWeb-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -8,7 +13,12 @@
 
 @font-face {
   font-family: "Peyda";
-  src: url("/fonts/PeydaWeb-Bold.woff2") format("woff2");
+  src:
+    local("Peyda Bold"),
+    local("PeydaWeb"),
+    local("PeydaWeb-Bold"),
+    url("/fonts/PeydaWeb-Bold.woff2") format("woff2"),
+    url("/fonts/PeydaWeb-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -101,7 +111,8 @@
     @apply mb-2 block text-sm font-bold text-ink;
   }
 
-  .ltr-inline {
+  .ltr-inline,
+  [dir="ltr"] {
     direction: ltr;
     unicode-bidi: isolate;
   }

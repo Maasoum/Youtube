@@ -1,6 +1,7 @@
 export type ImageKey =
   | "hero"
   | "foundations"
+  | "studio"
   | "creative"
   | "python"
   | "safety"
