@@ -38,6 +38,7 @@ interface CourseFormProps {
 const artOptions = [
   { value: "foundations", label: "هوش مصنوعی مقدماتی" },
   { value: "studio", label: "پوستر استودیوی کوچک من" },
+  { value: "creativeCourse", label: "پوستر هوش مصنوعی خلاق" },
   { value: "creative", label: "خلاقیت و هنر" },
   { value: "python", label: "کدنویسی پایتون" },
   { value: "safety", label: "شهروند دیجیتال" },

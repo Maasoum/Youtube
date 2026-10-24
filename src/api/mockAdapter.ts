@@ -165,7 +165,8 @@ interface StoredSession {
   token: string;
 }
 
-const DB_KEY = "brightpaths.mockdb.v3";
+// تغییرات کاتالوگ دوره‌ها باید در پیش‌نمایش mock هم بلافاصله دیده شوند.
+const DB_KEY = "brightpaths.mockdb.v4";
 const SESSION_KEY = "brightpaths.session.v1";
 const LEADS_KEY = "brightpaths.leads.v1";
 const CONTACT_KEY = "brightpaths.contact.v1";
