@@ -356,7 +356,6 @@ const IMAGE_KEYS: readonly ImageKey[] = [
   "hero",
   "foundations",
   "studio",
-  "wizards",
   "creative",
   "python",
   "safety",

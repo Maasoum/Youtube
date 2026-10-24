@@ -16,7 +16,7 @@ interface Palette {
   glow: string;
 }
 
-type SvgImageKey = Exclude<ImageKey, "studio" | "wizards">;
+type SvgImageKey = Exclude<ImageKey, "studio">;
 
 const palettes: Record<SvgImageKey, Palette> = {
   hero: { start: "#E9E4FF", end: "#C9BDF7", glow: "#F7C948" },
@@ -730,18 +730,13 @@ const scenes: Record<SvgImageKey, () => JSX.Element> = {
 export function PlaceholderArt({ imageKey, className }: PlaceholderArtProps) {
   const uid = useId().replace(/:/g, "");
 
-  if (imageKey === "studio" || imageKey === "wizards") {
-    const poster =
-      imageKey === "studio"
-        ? { file: "brand/course-studio-little.png", width: 640, height: 366 }
-        : { file: "brand/course-story-wizards.png", width: 658, height: 382 };
-
+  if (imageKey === "studio") {
     return (
       <img
-        src={assetUrl(poster.file)}
-        alt={imageAlts[imageKey]}
-        width={poster.width}
-        height={poster.height}
+        src={assetUrl("brand/course-studio-little.png")}
+        alt={imageAlts.studio}
+        width={640}
+        height={366}
         decoding="async"
         draggable={false}
         className={cn("block h-full w-full object-cover", className)}

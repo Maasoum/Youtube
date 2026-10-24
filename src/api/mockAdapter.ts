@@ -165,8 +165,7 @@ interface StoredSession {
   token: string;
 }
 
-// نسخه‌ی تازه، کاتالوگ به‌روز دوره‌ها را برای پیش‌نمایش mock بارگذاری می‌کند.
-const DB_KEY = "brightpaths.mockdb.v4";
+const DB_KEY = "brightpaths.mockdb.v3";
 const SESSION_KEY = "brightpaths.session.v1";
 const LEADS_KEY = "brightpaths.leads.v1";
 const CONTACT_KEY = "brightpaths.contact.v1";
