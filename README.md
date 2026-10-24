@@ -115,7 +115,7 @@ build را دوباره بگیرید و کش مرورگر را با hard refresh
   `public/fonts/README.md` اضافه کنید؛ تا آن زمان فالبک Tahoma استفاده می‌شود.
 - صفحه‌ی اصلی شامل هیرو، ویژگی‌های تعاملی، دوره‌های محبوب، مواد آموزشی،
   کاروسل مربیان، وبلاگ، پرسش‌های متداول و فرم عضویت در خبرنامه است.
-- برای بازنشانی داده‌ی نمونه، کلیدهای `brightpaths.mockdb.v3`،
+- برای بازنشانی داده‌ی نمونه، کلیدهای `brightpaths.mockdb.v4`،
   `brightpaths.session.v1`، `brightpaths.leads.v1` و `brightpaths.contact.v1`
   را از localStorage حذف کنید.
 

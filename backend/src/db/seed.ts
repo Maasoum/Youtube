@@ -56,7 +56,7 @@ const sampleCourses = [
   },
   {
     slug: "creative-ai",
-    title: "ساختن با هوش مصنوعی",
+    title: "جادوگران قصه ساز",
     description:
       "پروژه‌های خلاقانه‌ی تصویر، داستان و موسیقی با ابزارهای ایمن و راهنمایی والدین.",
     ageMin: 10,
@@ -65,7 +65,10 @@ const sampleCourses = [
     providerSiteUrl: "https://provider.example",
     activationInstructions:
       "کلید لایسنس را در پنل ارائه‌دهنده وارد کنید و حساب کودک را فعال کنید.",
-    priceToman: 1_590_000,
+    durationWeeks: 8,
+    sessions: 10,
+    art: "wizards",
+    priceToman: 4_050_000,
     isPublished: true,
   },
   {

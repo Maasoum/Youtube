@@ -106,7 +106,7 @@ await check("save payment token masks and never stores it", async () => {
   assert.equal(settings.hasToken, true);
   assert.equal(settings.maskedToken, "••••1234");
   assert.ok(!("token" in settings));
-  const raw = store.get("brightpaths.mockdb.v3") ?? "";
+  const raw = store.get("brightpaths.mockdb.v4") ?? "";
   assert.ok(!raw.includes(token), "full token found in storage");
   assert.ok(!raw.includes("abcd1234"), "token suffix beyond mask found in storage");
   return receipt.maskedToken;

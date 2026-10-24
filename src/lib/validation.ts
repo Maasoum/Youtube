@@ -550,7 +550,7 @@ export const courseFormSchema = z
       .trim()
       .min(20, "راهنمای فعال‌سازی را کامل بنویسید.")
       .max(1200, "راهنمای فعال‌سازی نمی‌تواند بیشتر از ۱٬۲۰۰ کاراکتر باشد."),
-    art: z.enum(["foundations", "studio", "creative", "python", "safety"], {
+    art: z.enum(["foundations", "studio", "wizards", "creative", "python", "safety"], {
       errorMap: () => ({ message: "تصویر دوره را انتخاب کنید." }),
     }),
     badge: optionalText(30, "برچسب نمی‌تواند بیشتر از ۳۰ کاراکتر باشد."),
