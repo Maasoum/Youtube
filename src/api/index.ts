@@ -65,12 +65,12 @@ export * from "./types";
 
 /**
  * انتخاب لایه‌ی داده:
- * - پیش‌فرض (و در production) adapter واقعی روی `/api/v1` با کوکی نشست.
- * - با `VITE_USE_MOCK=true` در محیط توسعه، همان adapter ساختگی قبلی فعال
- *   می‌شود تا کار روی رابط کاربری بدون بک‌اند ممکن بماند.
+ * - در توسعه، اگر صراحتاً `VITE_USE_MOCK=false` داده نشود، mock فعال است؛
+ *   بنابراین مسیرهای عمومی بدون Fastify محلی هم قابل مشاهده می‌مانند.
+ * - در production همیشه adapter واقعی روی `/api/v1` با کوکی نشست استفاده می‌شود.
  */
 const USE_MOCK =
-  import.meta.env.DEV && import.meta.env.VITE_USE_MOCK === "true";
+  import.meta.env.DEV && import.meta.env.VITE_USE_MOCK !== "false";
 
 export const apiMode: "mock" | "real" = USE_MOCK ? "mock" : "real";
 

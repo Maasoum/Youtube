@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck } from "lucide-react";
+import { Instagram, ShieldCheck } from "lucide-react";
 import { brand } from "@/config/brand";
 import { purchaseConfig } from "@/config/purchase";
 import { toPersianDigits } from "@/lib/format";
@@ -23,28 +23,48 @@ const legalLinks = [
   { label: "شرایط بازگشت وجه", to: "/refund-policy" },
 ];
 
+const fallbackSettings: PublicSiteSettings = {
+  footer: {
+    about: brand.description,
+    email: "",
+    phone: "",
+    address: "",
+  },
+  trustBadge: {
+    enabled: false,
+    label: "",
+    url: "",
+    code: "",
+  },
+  fulfillmentSlaHours: purchaseConfig.licenseDeliveryHours,
+  taxPercent: 0,
+};
+
 export function Footer() {
-  const [settings, setSettings] = useState<PublicSiteSettings | null>(null);
+  // ابتدا نسخه‌ی محلی نمایش داده می‌شود تا پیوندهای فوتر هرگز منتظر API نمانند.
+  // در صورت در دسترس بودن، تنظیمات پنل مدیریت جایگزین این داده‌ها می‌شود.
+  const [settings, setSettings] = useState<PublicSiteSettings>(fallbackSettings);
 
   useEffect(() => {
     let active = true;
+
     contentApi
       .getPublicSettings()
       .then((data) => {
         if (active) setSettings(data);
       })
       .catch(() => {
-        // در صورت خطا، اطلاعات پیش‌فرض برند نمایش داده می‌شود.
+        if (active) setSettings(fallbackSettings);
       });
+
     return () => {
       active = false;
     };
   }, []);
 
-  const footerInfo = settings?.footer;
-  const trustBadge = settings?.trustBadge;
-  const deliveryHours =
-    settings?.fulfillmentSlaHours ?? purchaseConfig.licenseDeliveryHours;
+  const footerInfo = settings.footer;
+  const trustBadge = settings.trustBadge;
+  const deliveryHours = settings.fulfillmentSlaHours;
 
   return (
     <footer className="border-t border-black/5 bg-white">
@@ -53,7 +73,7 @@ export function Footer() {
           <div>
             <Logo size="md" />
             <p className="mt-5 max-w-sm text-sm leading-7 text-muted">
-              {footerInfo?.about ?? brand.description}
+              {footerInfo.about}
             </p>
             <p className="mt-4 text-xs leading-6 text-muted/80">
               ضمانت بازگشت {toPersianDigits(purchaseConfig.refundDays)} روزه ·
@@ -107,7 +127,21 @@ export function Footer() {
                   </a>
                 </li>
               ) : null}
-              {footerInfo?.phone ? (
+              {brand.instagramHandle ? (
+                <li>
+                  <a
+                    href={`https://instagram.com/${brand.instagramHandle}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    dir="ltr"
+                    className="inline-flex items-center gap-2 underline-offset-4 transition hover:text-primary hover:underline"
+                  >
+                    <Instagram className="size-4" aria-hidden="true" />
+                    @{brand.instagramHandle}
+                  </a>
+                </li>
+              ) : null}
+              {footerInfo.phone ? (
                 <li>
                   <a
                     href={`tel:${footerInfo.phone}`}
@@ -118,7 +152,7 @@ export function Footer() {
                   </a>
                 </li>
               ) : null}
-              {footerInfo?.address ? (
+              {footerInfo.address ? (
                 <li className="leading-7">{footerInfo.address}</li>
               ) : null}
               <li className="leading-7">{brand.supportHours}</li>
@@ -131,7 +165,7 @@ export function Footer() {
             © ۱۴۰۵ {brand.nameFa}. تمامی حقوق محفوظ است.
           </p>
 
-          {trustBadge?.enabled ? (
+          {trustBadge.enabled ? (
             <a
               href={trustBadge.url}
               target="_blank"

@@ -20,18 +20,20 @@ npm run preview     # پیش‌نمایش build
 
 ## اتصال به بک‌اند
 
-به‌صورت پیش‌فرض لایه‌ی داده روی API واقعی (`/api/v1`) با کوکی نشست کار می‌کند.
-درخواست‌ها با `credentials: "include"` می‌روند، توکن CSRF از `/auth/csrf`
-گرفته و در هدر `x-csrf-token` فرستاده می‌شود و هیچ توکن یا کلید لایسنس در
-`localStorage` نوشته نمی‌شود. کلید کامل فقط پس از «نمایش» و به‌صورت موقت
-(۶۰ ثانیه با پاک‌شدن خودکار) در state کامپوننت می‌ماند.
+در development، لایه‌ی داده به‌صورت پیش‌فرض از mock adapter استفاده می‌کند تا
+دوره‌ها، وبلاگ، پرسش‌های پرتکرار، منو و فوتر بدون Fastify محلی هم بارگذاری
+شوند. برای اتصال توسعه به API واقعی (`/api/v1`) مقدار `VITE_USE_MOCK=false`
+را تنظیم کنید. درخواست‌های نسخهٔ واقعی با `credentials: "include"` می‌روند،
+توکن CSRF از `/auth/csrf` گرفته و در هدر `x-csrf-token` فرستاده می‌شود؛ هیچ
+توکن یا کلید لایسنس در `localStorage` نوشته نمی‌شود. کلید کامل فقط پس از
+«نمایش» و به‌صورت موقت (۶۰ ثانیه با پاک‌شدن خودکار) در state کامپوننت می‌ماند.
 
 ```bash
-# اجرا با بک‌اند واقعی (Fastify روی ۳۰۰۰)
+# اجرا با داده‌های محلی mock (پیش‌فرض development)
 npm run dev
 
-# اجرا بدون بک‌اند، با mock adapter
-VITE_USE_MOCK=true npm run dev
+# اجرا با بک‌اند واقعی (Fastify روی ۳۰۰۰)
+VITE_USE_MOCK=false npm run dev
 ```
 
 - در توسعه، Vite مسیر `/api` را به `VITE_API_PROXY_TARGET` (پیش‌فرض
@@ -44,11 +46,11 @@ VITE_USE_MOCK=true npm run dev
 - پیکربندی nginx شامل CSP سخت‌گیرانه، HSTS، `X-Frame-Options`، پروکسی
   `/api` و `/uploads`، fallback مسیرهای SPA و کش طولانی دارایی‌های hash‌دار
   است.
-- برای روشن‌ماندن دائمی حالت mock، `VITE_USE_MOCK=true` را در
-  `.env.development.local` بگذارید؛ این فایل فقط در `npm run dev` خوانده
-  می‌شود و `npm run build` همیشه نسخه‌ی واقعی را می‌سازد (پرچم mock در
-  production نادیده گرفته می‌شود). `mockAdapter` با import پویا بارگذاری
-  می‌شود و در بسته‌ی اصلی production نیست.
+- در development، mock به‌صورت پیش‌فرض فعال است. برای اتصال به Fastify محلی،
+  `VITE_USE_MOCK=false` را در `.env.development.local` بگذارید؛ این فایل فقط
+  در `npm run dev` خوانده می‌شود و `npm run build` همیشه نسخه‌ی واقعی را
+  می‌سازد (پرچم mock در production نادیده گرفته می‌شود). `mockAdapter` با
+  import پویا بارگذاری می‌شود و در بسته‌ی اصلی production نیست.
 
 ## ورودهای نمایشی
 
